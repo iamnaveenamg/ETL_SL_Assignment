@@ -1,0 +1,95 @@
+Source MongoDB Property Path,Transformation / Action,Target Silver Table Name,Target Column Name
+Bills Tables,,,
+bills._id.$oid,Unpack String ID,silverbillsFlat,billDocumentId
+bills.inv_num,Direct Mapping,silverbillsFlat,invoiceNumber
+bills.po_num,Direct Mapping,silverbillsFlat,purchaseOrderNumber
+bills.status,Direct Mapping,silverbillsFlat,billstatus
+bills.inv_type,Direct Mapping,silverbillsFlat,invoiceType
+bills.invoice_category,Direct Mapping,silverbillsFlat,invoiceCategory
+bills.file_name,Direct Mapping,silverbillsFlat,fileName
+bills.original_filename,Direct Mapping,silverbillsFlat,originalFilename
+bills.inv_source,Direct Mapping,silverbillsFlat,sourceEmailAddress
+bills.bill_to,Direct Mapping,silverbillsFlat,billingAddress
+bills.ship_to,Direct Mapping,silverbillsFlat,shippingAddress
+bills.location_name,Direct Mapping,silverbillsFlat,locationName
+bills.inv_date.$date,Cast to Timestamp,silverbillsFlat,invoiceDate
+bills.due_date.$date,Cast to Timestamp,silverbillsFlat,invoiceDueDate
+bills.created_at.$date,Cast to Timestamp,silverbillsFlat,systemCreatedAt
+bills.updated_at.$date,Cast to Timestamp,silverbillsFlat,systemUpdatedAt
+bills.sub_total,Cast to Decimal,silverbillsFlat,documentSubTotal
+bills.shipping,Cast to Decimal,silverbillsFlat,documentShippingCost
+bills.taxes,Cast to Decimal,silverbillsFlat,documentTaxAmount
+bills.discount_amount,Cast to Decimal,silverbillsFlat,documentDiscountAmount
+bills.paid_amount,Cast to Decimal,silverbillsFlat,documentPaidAmount
+bills.total,Cast to Decimal,silverbillsFlat,documentGrandTotal
+bills.line_items[].supplier_product_id,EXPLODE Array - Item Grain,silverbillsFlat,productSku
+bills.line_items[].name,EXPLODE Array - Item Grain,silverbillsFlat,productName
+bills.line_items[].qty,Explode & Cast to Int,silverbillsFlat,lineQuantity
+bills.line_items[].unit_price,Explode & Cast to Decimal,silverbillsFlat,lineUnitPrice
+bills.line_items[].price,Explode & Cast to Decimal,silverbillsFlat,lineExtendedPrice
+bills.supplier_extra_info.name,Extract Struct Field,silverbillsFlat,supplierName
+bills.supplier_extra_info.address,Extract Struct Field,silverbillsFlat,supplierAddress
+bills.supplier_extra_info.website,Extract Struct Field,silverbillsFlat,supplierWebsite
+bills.invoice_workflow_active,Cast to Boolean,silverbillsFlat,invoiceWorkflowActive
+bills.approval_condition_is_and,Cast to Boolean,silverbillsFlat,approvalConditionIsAnd
+bills.approval_info.email,Extract Array Element,silverbillsFlat,primaryApproverEmail
+bills.approval_info.user_name,Extract Array Element,silverbillsFlat,primaryApproverName
+Orders,,,
+orders._id.$oid,Unpack String ID,silverOrdersFlat,orderDocumentId
+orders.status,Direct Mapping,silverOrdersFlat,masterOrderStatus
+orders.user_id,Direct Mapping,silverOrdersFlat,orderCreatorUserId
+orders.group_id,Direct Mapping,silverOrdersFlat,orderGroupId
+orders.order_by,Direct Mapping,silverOrdersFlat,orderBuyerId
+orders._meta.traceId,Extract Struct Field,silverOrdersFlat,systemTraceId
+orders._meta.at.$date,Cast Milliseconds to Timestamp,silverOrdersFlat,metaTimestamp
+orders.shipping_address[],Flatten Array with Comma,silverOrdersFlat,shippingDestinationAddress
+orders.total_amt,Cast to Decimal,silverOrdersFlat,masterOrderTotal
+orders.savings_total,Cast to Decimal,silverOrdersFlat,masterOrderSavings
+orders.suppliers_count,Cast to Int,silverOrdersFlat,totalDistinctSuppliers
+orders.success_count,Cast to Int,silverOrdersFlat,successCount
+orders.error_count,Cast to Int,silverOrdersFlat,errorCount
+orders.products[].supplier,EXPLODE Array - Inventory Grain,silverOrdersFlat,itemSupplierCode
+orders.products[].product_id,EXPLODE Array - Inventory Grain,silverOrdersFlat,internalProductId
+orders.products[].supplier_product_id,EXPLODE Array - Inventory Grain,silverOrdersFlat,supplierProductSku
+orders.products[].name,EXPLODE Array - Inventory Grain,silverOrdersFlat,productName
+orders.products[].image_url,EXPLODE Array - Inventory Grain,silverOrdersFlat,productImageUrl
+orders.products[].qty,Explode & Cast to Int,silverOrdersFlat,orderedQuantity
+orders.products[].unit_price,Explode & Cast to Decimal,silverOrdersFlat,orderedUnitPrice
+orders.products[].price,Explode & Cast to Decimal,silverOrdersFlat,orderedLineTotal
+orders.products[].is_backorder,Explode & Coalesce Null to False,silverOrdersFlat,isItemOnBackorder
+orders.products[].account_code_values.department,Extract Deep Nested Element,silverOrdersFlat,accountingDepartment
+orders.products[].account_code_values.location_id,Extract Deep Nested Element,silverOrdersFlat,accountingLocation
+orders.products[].account_code_values.expense_code,Extract Deep Nested Element,silverOrdersFlat,accountingExpenseCode
+orders.meta_data.{SUPPLIER}.po_num,Dynamic Map Lookup via Supplier Key,silverOrdersFlat,subPoNumber
+orders.meta_data.{SUPPLIER}.shipping_method,Dynamic Map Lookup via Supplier Key,silverOrdersFlat,subShippingMethod
+orders.meta_data.{SUPPLIER}.sub_total,Dynamic Map Lookup & Cast to Decimal,silverOrdersFlat,subVendorSubTotal
+orders.meta_data.{SUPPLIER}.shipping_cost,Dynamic Map Lookup & Cast to Decimal,silverOrdersFlat,subVendorShippingCost
+orders.meta_data.{SUPPLIER}.tax,Dynamic Map Lookup & Cast to Decimal,silverOrdersFlat,subVendorTaxAmount
+orders.meta_data.{SUPPLIER}.total,Dynamic Map Lookup & Cast to Decimal,silverOrdersFlat,subVendorGrandTotal
+orders.payment_methods.{SUPPLIER},Dynamic Map Lookup via Supplier Key,silverOrdersFlat,subVendorPaymentMethod
+orders.supplier_order_ids.{SUPPLIER},Dynamic Map Lookup via Supplier Key,silverOrdersFlat,subVendorFulfillmentId
+Users,,,
+users._id.$oid,Unpack String ID,silverusersAndUsersFlat,cartDocumentId
+users.seq,Cast to Int,silverusersAndUsersFlat,usersequenceNumber
+users.cart.noteId,Extract Struct Field,silverusersAndUsersFlat,cartNoteId
+users.cart.items,EXPLODE Map Key-Values,silverusersAndUsersFlat,quantitySelected
+users.username,DENORMALIZE into Cart Row,silverusersAndUsersFlat,userAccountUsername
+users.email,DENORMALIZE into Cart Row,silverusersAndUsersFlat,userAccountEmail
+users.fname,DENORMALIZE into Cart Row,silverusersAndUsersFlat,userFirstName
+users.lname,DENORMALIZE into Cart Row,silverusersAndUsersFlat,userLastName
+users.clinic_name,DENORMALIZE into Cart Row,silverusersAndUsersFlat,clinicName
+users.referral_type,DENORMALIZE into Cart Row,silverusersAndUsersFlat,referralType
+users.phone_no,Flatten Array with Comma,silverusersAndUsersFlat,userFlattenedPhones
+users.roleId,Flatten Array with Comma,silverusersAndUsersFlat,userFlattenedRoles
+users.user_type,Flatten Array with Comma,silverusersAndUsersFlat,userFlattenedTypes
+users.departmentId,Flatten Array with Comma,silverusersAndUsersFlat,userFlattenedDepartments
+users.cart.additional_info.{ITEM}.price.max,Dynamic Key Cross-Evaluation,silverusersAndUsersFlat,matrixMaxMarketPrice
+users.cart.additional_info.{ITEM}.price.DC,Dynamic Matrix Evaluation,silverusersAndUsersFlat,matrixDcPrice
+users.cart.additional_info.{ITEM}.price.TDSC,Dynamic Matrix Evaluation,silverusersAndUsersFlat,matrixTdscPrice
+users.cart.additional_info.{ITEM}.price.BENCO,Dynamic Matrix Evaluation,silverusersAndUsersFlat,matrixBencoPrice
+users.cart.additional_info.{ITEM}.price.DARBY,Dynamic Matrix Evaluation,silverusersAndUsersFlat,matrixDarbyPrice
+users.cart.additional_info.{ITEM}.price.DENTALCITY,Dynamic Matrix Evaluation,silverusersAndUsersFlat,matrixDentalcityPrice
+users.priceMap.{VENDOR}.{ID}.1,Split Key & Extract Live Price,silverusersAndUsersFlat,liveCrawledPrice
+users.priceMap.{VENDOR}.{ID}.fetched_at,Split Key & Extract Milliseconds,silverusersAndUsersFlat,livePriceFetchedAtMillis
+users.priceMap.{VENDOR}.{ID}.available_on_call,Split Key & Extract Boolean,silverusersAndUsersFlat,isAvailableOnCall
+users.priceMap.{VENDOR}.{ID}.availability_status,Split Key & Extract Status String,silverusersAndUsersFlat,liveStockAvailabilityStatus

@@ -1,0 +1,38 @@
+Silver Source Column Name,Target Gold Column Name,PostgreSQL Data Type,Functional Mapping Logic / Ingestion Rule
+DimUsers,,,
+userId,userId,VARCHAR(50),Core alphanumeric system reference key from MongoDB.
+userAccountUsername,userAccountUsername,VARCHAR(255),System login credentials account name.
+userAccountEmail,userAccountEmail,VARCHAR(255),Primary corporate email coordinate.
+userFirstName,userFirstName,VARCHAR(100),Profile name metadata string.
+userLastName,userLastName,VARCHAR(100),Profile name metadata string.
+clinicName,clinicName,VARCHAR(255),?? Denormalized Flat Field. Retained in-place inside the dimension table for optimal query execution speeds.
+userStreetAddress,userStreetAddress,TEXT,Full physical residential or workplace street profile.
+userCity,userCity,VARCHAR(100),Physical location city tier.
+userState,userState,VARCHAR(100),Physical location state tier.
+userZipCode,userZipCode,VARCHAR(30),Regional postal identification tag.
+referralType,referralType,VARCHAR(255),Marketing channel attribution key.
+userFlattenedPhones,userFlattenedPhones,TEXT,"Pre-flattened, comma-separated string tracking multiple contact configurations."
+userFlattenedRoles,userFlattenedRoles,TEXT,"Pre-flattened, comma-separated authorization security token lists."
+userFlattenedTypes,userFlattenedTypes,TEXT,"Pre-flattened, comma-separated dynamic context classification groups."
+userFlattenedDepartments,userFlattenedDepartments,TEXT,Pre-flattened multi-valued element string mapped straight from source document arrays.
+DimLocations,,,
+accountingLocation,accountingLocation,VARCHAR(100),Unified account code profile parameter tracking physical warehouse facilities.
+locationName,locationName,VARCHAR(255),Text string identifier designating target destination facility.
+billingAddress,billingAddress,TEXT,Primary financial corporate headquarters textual address profile.
+shippingAddress,shippingAddress,TEXT,Active operational drop-off facility string tracking target stores.
+DimSupplier,,,
+supplierName,supplierName,VARCHAR(255),Master conformed identity string tracking system procurement entities.
+supplierAddress,supplierAddress,TEXT,Corporate vendor routing text block.
+supplierWebsite,supplierWebsite,VARCHAR(255),Digital commerce integration endpoint portal name.
+DimProduct,,,
+productSku,productSku,VARCHAR(150),Core clean inventory system unique business item key constraint.
+productName,productName,TEXT,Complete descriptive text identifier mapping item functions.
+productImageUrl,productImageUrl,TEXT,Object storage static path location pointing to asset thumbnails.
+isItemOnBackorder,isItemOnBackorder,BOOLEAN,Boolean switch tracking catalog supply pipeline availability status.
+DimDate,,,
+invoiceDate / metaTimestamp,fullTimestamp,TIMESTAMP WITH TIME ZONE,The master datetime anchor managing data warehouse tracking timelines.
+Derived Metric Field,calendarYear,INT,Extracted calendar cycle year integer via logic execution.
+Derived Metric Field,calendarMonth,INT,Extracted calendar cycle month index integer.
+Derived Metric Field,calendarDay,INT,Extracted day count positioning integer within the month.
+Derived Metric Field,dayOfWeek,VARCHAR(20),"Text representation tracking the textual name day slice (e.g., ""Monday"")."
+Derived Metric Field,quarter,INT,Derived accounting loop timeline indicator (Value range: 1 to 4).

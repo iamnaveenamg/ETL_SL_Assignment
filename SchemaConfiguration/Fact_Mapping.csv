@@ -1,0 +1,59 @@
+Silver Source Column Name,Target Gold Column Name,PostgreSQL Data Type,Functional Mapping Logic / Ingestion Rule
+FactBillItems,,,
+billDocumentId,billDocumentId,VARCHAR(50),Degenerate dimension mapping structural audit traces.
+invoiceNumber,invoiceNumber,VARCHAR(150),Core billing voucher accounting serial text value.
+purchaseOrderNumber,purchaseOrderNumber,VARCHAR(150),Contextual contract validation tracker linking transactions.
+invoiceStatus,invoiceStatus,VARCHAR(50),Settlement verification state description tag.
+invoiceType,invoiceType,VARCHAR(50),Standard document operational group marker.
+invoiceCategory,invoiceCategory,VARCHAR(150),Financial general ledger ledger aggregation text.
+fileName,fileName,VARCHAR(255),Internal framework logging parameter identifying input dumps.
+lineQuantity,lineQuantity,INT,Count metric specifying standard items packaged on a bill.
+lineUnitPrice,lineUnitPrice,"NUMERIC(15,4)",Precise unit scale entry capturing raw dollar valuations.
+lineExtendedPrice,lineExtendedPrice,"NUMERIC(15,4)",Billed row total volume computed dynamically (lineQuantity * lineUnitPrice).
+documentSubTotal,documentSubTotal,"NUMERIC(15,4)",Gross summary cost before processing discounts or shipping.
+documentShippingCost,documentShippingCost,"NUMERIC(15,4)",Billed logistics transportation costs summary.
+documentTaxAmount,documentTaxAmount,"NUMERIC(15,4)",Billed state and federal assessment metrics.
+documentDiscountAmount,documentDiscountAmount,"NUMERIC(15,4)",Subtracted promotion value variables tracking budget deductions.
+documentGrandTotal,documentGrandTotal,"NUMERIC(15,4)",Final definitive financial obligation sum written to the ledger.
+FactOrderItems,,,
+orderDocumentId,orderDocumentId,VARCHAR(50),Degenerate dimension mapping structural audit traces.
+masterOrderStatus,masterOrderStatus,VARCHAR(50),Central tracking classification tag managing system runs.
+subPoNumber,subPoNumber,VARCHAR(150),Secondary supplier fulfillment validation tracking string.
+subShippingMethod,subShippingMethod,VARCHAR(150),Selected operational freight carrier guidelines specification.
+subVendorPaymentMethod,subVendorPaymentMethod,VARCHAR(150),Financial method string identifying clear accounts processing types.
+subVendorFulfillmentId,subVendorFulfillmentId,TEXT,Raw payload token generated from distributed API responses.
+systemTraceId,systemTraceId,VARCHAR(100),Session lineage tracking hash generated on extraction window.
+accountingDepartment,accountingDepartmentCode,VARCHAR(50),** Star Target:** Stored flat in row. Snowflake Target:
+,,,Maps to DimAccountCodes.
+accountingExpenseCode,accountingExpenseCode,VARCHAR(50),** Star Target:** Stored flat in row. Snowflake Target: Maps to DimAccountCodes.
+orderedQuantity,orderedQuantity,INT,Volume unit measure requested from procurement nodes.
+orderedUnitPrice,orderedUnitPrice,"NUMERIC(15,4)",Negotiated catalog contract baseline price configuration.
+orderedLineTotal,orderedLineTotal,"NUMERIC(15,4)",Multiplied inventory grid summary metrics (orderedQuantity * orderedUnitPrice).
+subVendorSubTotal,subVendorSubTotal,"NUMERIC(15,4)",Aggregated baseline vendor line value context loops.
+subVendorShippingCost,subVendorShippingCost,"NUMERIC(15,4)",Aggregated independent vendor freight parameters.
+subVendorTaxAmount,subVendorTaxAmount,"NUMERIC(15,4)",Aggregated individual vendor tax calculations.
+subVendorGrandTotal,subVendorGrandTotal,"NUMERIC(15,4)",Total financial weight assigned per specific sub-vendor invoice node.
+masterOrderTotal,masterOrderTotal,"NUMERIC(15,4)",Collective cart valuation summation aggregating multiple suppliers.
+masterOrderSavings,masterOrderSavings,"NUMERIC(15,4)",Calculated delta metric evaluating savings off manufacturer lists.
+successCount,successCount,INT,Quantitative score evaluating successful remote operational connections.
+errorCount,errorCount,INT,Quantitative score tracing API baseline connection errors.
+,,,
+FactCartItems,,,
+cartDocumentId,cartDocumentId,VARCHAR(50),Degenerate dimension mapping structural audit traces.
+cartSequenceNumber,cartSequenceNumber,INT,Sequence execution position index integer tracking browser records.
+cartNoteId,cartNoteId,VARCHAR(150),Document identification token tracking comment headers.
+matrixVendorCode,matrixVendorCode,VARCHAR(100),Parsed string mapping out comparative market target vendors.
+matrixVendorProductId,matrixVendorProductId,VARCHAR(150),Isolated competitive SKU mapped from array elements.
+liveStockAvailabilityStatus,liveStockAvailabilityStatus,VARCHAR(150),Web crawler real-time product inventory distribution check string.
+quantitySelected,quantitySelected,INT,Volume of inventory assigned to shopping card nodes by profiles.
+matrixMaxMarketPrice,matrixMaxMarketPrice,"NUMERIC(15,4)",Evaluated target top dollar threshold across all competitors.
+matrixDcPrice,matrixDcPrice,"NUMERIC(15,4)",Extracted matrix pricing for competitor: DC.
+matrixTdscPrice,matrixTdscPrice,"NUMERIC(15,4)",Extracted matrix pricing for competitor: TDSC.
+matrixBencoPrice,matrixBencoPrice,"NUMERIC(15,4)",Extracted matrix pricing for competitor: BENCO.
+matrixDarbyPrice,matrixDarbyPrice,"NUMERIC(15,4)",Extracted matrix pricing for competitor: DARBY.
+matrixDentalcityPrice,matrixDentalcityPrice,"NUMERIC(15,4)",Extracted matrix pricing for competitor: DENTALCITY.
+liveCrawledPrice,liveCrawledPrice,"NUMERIC(15,4)",Real-time value scraped directly via dynamic engine automation scripts.
+livePriceFetchedAtMillis,livePriceFetchedAtMillis,BIGINT,Time execution parameter capturing system epoch runtime marks.
+isAvailableOnCall,isAvailableOnCall,BOOLEAN,Boolean system indicator flag isolating off-catalog quote items.
+,,,
+,,,
